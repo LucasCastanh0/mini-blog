@@ -1,13 +1,15 @@
 'use client'
 
 import { createPost } from '@/app/actions'
+import { Editor } from '@/components/Editor'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { useActionState } from 'react'
+import { useActionState, useRef } from 'react'
 
 export default function NewPost() {
   const [state, action, isPending] = useActionState(createPost, null)
+  const contentRef = useRef<HTMLInputElement>(null)
 
   return (
     <main className="max-w-2xl mx-auto py-12 px-4">
@@ -33,12 +35,10 @@ export default function NewPost() {
 
             <div>
               <label className="text-sm font-medium">Conteúdo</label>
-              <textarea
-                name="content"
-                rows={6}
-                className="w-full border rounded-md px-3 py-2 mt-1 text-sm"
-                placeholder="Escreva o conteúdo do post"
-              />
+              <input type="hidden" name="content" ref={contentRef} />
+              <Editor onChange={(value) => {
+                if (contentRef.current) contentRef.current.value = value
+              }} />
             </div>
 
             {state?.error && (

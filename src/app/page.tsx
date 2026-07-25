@@ -36,7 +36,18 @@ export default async function Home() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 line-clamp-2">{post.content}</p>
+              <p className="text-gray-600 line-clamp-2">
+                {(() => {
+                  try {
+                    const parsed = JSON.parse(post.content)
+                    return parsed.root.children
+                      .map((p: any) => p.children.map((n: any) => n.text).join(''))
+                    .join(' ')
+                  } catch {
+                    return post.content
+                  }
+                })()}
+              </p>
             </CardContent>
           </Card>
         ))}
