@@ -1,5 +1,7 @@
 import Image from 'next/image'
-import { timeAgo, readingTime, extractText } from '@/lib/format'
+import { Suspense } from 'react'
+import { readingTime, extractText } from '@/lib/format'
+import { RelativeTime } from '@/components/RelativeTime'
 
 interface Post {
   id: string
@@ -60,7 +62,9 @@ export function FeaturedPost({ post }: { post: Post }) {
         <div>
           <div className="flex items-center gap-2 mb-6">
             <span className="text-xs font-medium" style={{ color: '#aaa' }}>
-              {timeAgo(post.createdAt)}
+              <Suspense fallback="—">
+                <RelativeTime date={post.createdAt} />
+              </Suspense>
             </span>
             <span className="w-1 h-1 rounded-full" style={{ background: '#ddd' }} />
             <span className="text-xs font-medium" style={{ color: '#aaa' }}>

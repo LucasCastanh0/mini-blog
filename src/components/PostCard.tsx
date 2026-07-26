@@ -1,5 +1,7 @@
 import Image from 'next/image'
-import { timeAgo, readingTime, extractText } from '@/lib/format'
+import { Suspense } from 'react'
+import { readingTime, extractText } from '@/lib/format'
+import { RelativeTime } from '@/components/RelativeTime'
 
 interface Post {
   id: string
@@ -48,7 +50,9 @@ export function PostCard({ post }: { post: Post }) {
       {/* Conteúdo */}
       <div className="p-5 flex flex-col flex-1">
         <p className="text-xs mb-3 font-medium" style={{ color: '#bbb' }}>
-          {timeAgo(post.createdAt)}
+          <Suspense fallback="—">
+            <RelativeTime date={post.createdAt} />
+          </Suspense>
         </p>
 
         <h3
